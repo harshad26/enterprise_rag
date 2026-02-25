@@ -70,3 +70,6 @@ end
 gem "devise", "~> 5.0"
 gem "sidekiq", "~> 8.1"
 gem "redis", "~> 5.4"
+gem "faraday"
+
+gem "faraday-multipart", "~> 1.2"
