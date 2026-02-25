@@ -1,0 +1,69 @@
+<div class="mb-6 flex items-center justify-between">
+  <div>
+    <h1 class="text-3xl font-extrabold tracking-tight text-gray-900"><%= @document.title %></h1>
+    <p class="mt-2 text-sm text-gray-500">
+      Uploaded by <%= @document.user.email %> on <%= @document.created_at.strftime("%B %d, %Y") %>
+    </p>
+  </div>
+  <div class="flex space-x-3">
+    <%= link_to documents_path, class: "inline-flex px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+      Back
+    <% end %>
+    
+    <% if current_user.admin? %>
+      <%= button_to document_path(@document), method: :delete, form: { data: { turbo_confirm: 'Are you sure you want to delete this document?' } }, class: "inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer" do %>
+        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+        Delete
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      Document Information
+    </h3>
+    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+      PDF details and background processing status.
+    </p>
+  </div>
+  <div class="px-4 py-5 sm:p-0">
+    <dl class="sm:divide-y sm:divide-gray-200">
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          File Name
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%= @document.pdf.filename %>
+        </dd>
+      </div>
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          File Size
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%= number_to_human_size(@document.pdf.byte_size) %>
+        </dd>
+      </div>
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 bg-gray-50">
+        <dt class="text-sm font-medium text-gray-500">
+          Content
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+           <% if @document.pdf.attached? %>
+             <%# Note: Depending on Rails config, displaying PDF directly might require different handling %>
+             <embed src="<%= url_for(@document.pdf) %>" type="application/pdf" width="100%" height="600px" class="border border-gray-300 rounded-md" />
+           <% else %>
+             <p class="text-red-500">No PDF attached.</p>
+           <% end %>
+        </dd>
+      </div>
+      <div class="py-4 sm:py-5 sm:px-6 text-center text-sm text-gray-500">
+        <p>A background job (PdfUploadJob) was triggered upon creation.</p>
+      </div>
+    </dl>
+  </div>
+</div>
