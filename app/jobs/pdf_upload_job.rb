@@ -15,6 +15,7 @@ class PdfUploadJob < ApplicationJob
       conn.post("/process-pdf") do |req|
         req.headers["Content-Type"] = "multipart/form-data"
         req.body = {
+          document_id: document_id,
           file: Faraday::Multipart::FilePart.new(
             tempfile.path,
             "application/pdf",
