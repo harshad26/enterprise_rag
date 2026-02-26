@@ -44,6 +44,10 @@ Enterprise RAG is a comprehensive, production-ready document processing and AI-p
 - Redis (for Sidekiq)
 - An active instance of the accompanying Python AI Document Processing Service running on `localhost:8000` (or configured otherwise).
 
+## Architecture Diagram
+
+![Architecture Diagram](screenshots/Architecture-Diagram.png)
+![Architecture Diagram](screenshots/Retrieval-Augmented-Generation-Architecture.png)
 
 ## 📸 Application Screenshots
 
